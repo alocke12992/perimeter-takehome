@@ -1,31 +1,23 @@
-import { Box, Spinner } from "@chakra-ui/react";
-import useLocalStorage from "./hooks/useLocalStorage";
-import { ISession } from "./api/SessionsApi";
-import { useEffect, useState } from "react";
-import { useCreateSession } from "./hooks/useCreateSession";
+import Loading from "./components/Loading";
+import { Route, Routes } from "react-router-dom";
+import Paths from "./lib/Paths";
+import SessionPage from "./pages/SessionPage";
+import Layout from "./components/Layout";
+import SharedSessionPage from "./pages/SharedSessionPage";
 
 function App() {
-  const [loading, setLoading] = useState(true);
-  const [value, setValue] = useLocalStorage<ISession>("session");
-
-  const { createSession } = useCreateSession();
-  console.log("session", value);
-  // check if session exists
-
-  useEffect(() => {
-    const handleCreateSession = async () => {
-      const res = await createSession({ lat: 0, long: 0 });
-      console.log("res", res);
-      setValue(res);
-    };
-    if (!value) {
-      handleCreateSession();
-      return;
-    }
-    setLoading(false);
-  }, [value]);
-
-  return <>{loading ? <Spinner /> : <Box>Session created</Box>}</>;
+  return (
+    <Layout>
+      <Routes>
+        <Route element={<SessionPage />} path={Paths.Views.Session()} />
+        <Route
+          element={<SharedSessionPage />}
+          path={Paths.Views.SharedSession()}
+        />
+        <Route element={<Loading />} path="*"></Route>
+      </Routes>
+    </Layout>
+  );
 }
 
 export default App;

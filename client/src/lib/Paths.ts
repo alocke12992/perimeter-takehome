@@ -16,6 +16,10 @@ const Paths = {
         `${EnvVars.ApiUrl}/sessions/${id}/polygons`,
     },
   },
+  Views: {
+    Session: () => `/`,
+    SharedSession: () => `/shared-session/:id`,
+  },
 };
 
 export default Paths;
