@@ -1,6 +1,12 @@
 import { Schema, model } from "mongoose";
 
-const SessionSchema = new Schema({
+export interface ISession {
+  lat: number;
+  long: number;
+  createdAt: Date;
+}
+
+const SessionSchema = new Schema<ISession>({
   lat: {
     type: Number,
     required: true,
@@ -15,4 +21,4 @@ const SessionSchema = new Schema({
   },
 });
 
-export default model("Session", SessionSchema);
+export default model<ISession>("Session", SessionSchema);

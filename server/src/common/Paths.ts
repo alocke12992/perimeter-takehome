@@ -4,4 +4,8 @@
 
 export default {
   Base: "/api",
+  Sessions: {
+    Base: "/sessions",
+    Add: "/",
+  },
 } as const;
