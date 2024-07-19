@@ -1,9 +1,8 @@
+import { Polygon } from "geojson";
 import { Schema, Types, model } from "mongoose";
 
-export interface IPolygon {
+export interface IPolygon extends GeoJSON.Feature<Polygon> {
   sessionId: Types.ObjectId;
-  coordinates: number[][][];
-  label: string;
 }
 
 const PolygonSchema = new Schema<IPolygon>({
@@ -12,13 +11,31 @@ const PolygonSchema = new Schema<IPolygon>({
     required: true,
     ref: "Session",
   },
-  label: {
+  type: {
     type: String,
+    enum: ["Feature"],
     required: true,
+    default: "Feature",
   },
-  coordinates: {
-    type: [[[Number]]],
-    required: true,
+  geometry: {
+    type: {
+      type: String,
+      enum: ["Polygon"],
+      required: true,
+      default: "Polygon",
+    },
+    coordinates: {
+      type: [[[Number]]],
+      required: true,
+    },
+  },
+  properties: {
+    type: {
+      name: {
+        type: String,
+        required: true,
+      },
+    },
   },
 });
 

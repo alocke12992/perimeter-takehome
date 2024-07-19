@@ -5,11 +5,12 @@ import { IPolygon } from "@src/models/Polygon";
 import PolygonsController from "@src/controllers/PolygonsController";
 
 const create = async (req: IReq<IPolygon>, res: IRes) => {
-  const { label, sessionId, coordinates } = req.body;
+  const { sessionId, geometry, properties } = req.body;
   await PolygonsController.create({
-    label,
+    properties,
     sessionId,
-    coordinates,
+    geometry,
+    type: "Feature",
   });
   return res.status(HttpStatusCodes.CREATED).end();
 };
@@ -20,12 +21,13 @@ const list = async (req: IReq, res: IRes) => {
 };
 
 const update = async (req: IReq<IPolygon>, res: IRes) => {
-  const { label, sessionId, coordinates } = req.body;
+  const { sessionId, geometry, properties } = req.body;
 
   await PolygonsController.update(new ObjectId(req.params.id), {
-    label,
+    properties,
     sessionId,
-    coordinates,
+    geometry,
+    type: "Feature",
   });
   return res.status(HttpStatusCodes.CREATED).end();
 };
