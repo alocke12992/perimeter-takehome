@@ -27,15 +27,22 @@ const create = ({ lat, long }: CreateSessionBody): Promise<ISession> => {
     });
 };
 
-const listSessionPosts = (id: string | undefined): Promise<IPolygon[]> => {
+export type ListSessionPolygonsResponse = {
+  polygons: IPolygon[];
+  session: ISession;
+};
+
+const listSessionPosts = (
+  id: string | undefined
+): Promise<ListSessionPolygonsResponse | undefined> => {
   if (!id) {
-    return Promise.resolve([]);
+    return Promise.resolve(undefined);
   }
 
   return fetch(Paths.Api.Sessions.ListSessionPolygons(id))
     .then((res) => res.json())
     .then((res) => {
-      return res.polygons;
+      return res;
     });
 };
 

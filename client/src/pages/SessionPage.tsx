@@ -3,7 +3,8 @@ import useSession from "../hooks/useSession";
 
 const SessionPage = () => {
   const { session } = useSession();
-  const { isLoading } = useGetSessionPolygons(session?._id || "");
+  const { isLoading, data } = useGetSessionPolygons(session?._id || "");
+  console.log(data);
 
   if (isLoading) {
     return null;

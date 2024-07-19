@@ -13,9 +13,9 @@ const create = async (req: IReq<Omit<ISession, "createdAt">>, res: IRes) => {
 
 const listSessionPolygons = async (req: IReq, res: IRes) => {
   const { id } = req.params;
-  console.log("SESSION ID", id);
   const polygons = await PolygonsController.listBySessionId(new ObjectId(id));
-  return res.status(HttpStatusCodes.OK).json({ polygons });
+  const session = await SessionsController.get(new ObjectId(id));
+  return res.status(HttpStatusCodes.OK).json({ polygons, session });
 };
 
 export default {
