@@ -17,6 +17,17 @@ const create = async (
     },
     body: JSON.stringify({ ...feature, sessionId }),
   }).then((res) => {
+    return res.json();
+  });
+};
+
+const remove = async (id: string): Promise<void> => {
+  return await fetch(Paths.Api.Features.Remove(id), {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((res) => {
     console.log("res", res);
     return res.json();
   });
@@ -24,4 +35,5 @@ const create = async (
 
 export default {
   create,
+  remove,
 };

@@ -23,7 +23,7 @@ const update = async (req: IReq<IFeature>, res: IRes) => {
 
 const remove = async (req: IReq, res: IRes) => {
   await FeaturesController.remove(new ObjectId(req.params.id));
-  return res.status(HttpStatusCodes.NO_CONTENT).send();
+  return res.status(HttpStatusCodes.OK).json({ message: "Deleted" });
 };
 
 export default {

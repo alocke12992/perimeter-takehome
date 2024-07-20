@@ -3,14 +3,20 @@ import { useCallback, FC, useRef } from "react";
 import { MapEvent } from "mapbox-gl";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import { useControl } from "react-map-gl";
-import { Geometry, Polygon } from "geojson";
+import { Geometry } from "geojson";
+import { IFeature } from "../api/FeaturesApi";
 
 type Props = {
-  features: GeoJSON.Feature<Polygon>[];
+  features: IFeature[];
   setSelectedFeature: (feature?: GeoJSON.Feature<Geometry>) => void;
+  handleDelete: (id: string) => void;
 };
 
-const DrawFeatures: FC<Props> = ({ features, setSelectedFeature }) => {
+const DrawFeatures: FC<Props> = ({
+  features,
+  setSelectedFeature,
+  handleDelete,
+}) => {
   const drawRef = useRef<MapboxDraw | null>(null); // Ref need
   // const [selectedFeature, setSelectedFeature] =
   //   useState<GeoJSON.Feature<Feature> | null>(null);
@@ -32,23 +38,29 @@ const DrawFeatures: FC<Props> = ({ features, setSelectedFeature }) => {
     const feature = drawRef.current.get(selected?.[0]);
     console.log("ON CLICK", feature);
     setSelectedFeature(feature);
-  }, []);
+  }, [setSelectedFeature]);
 
-  const onCreate = useCallback((e: { features: GeoJSON.Feature[] }) => {
-    if (!e?.features) return;
-    setSelectedFeature(e.features[0]);
-  }, []);
+  const onCreate = useCallback(
+    (e: { features: IFeature[] }) => {
+      if (!e?.features) return;
+      setSelectedFeature(e.features[0]);
+    },
+    [setSelectedFeature]
+  );
 
-  const onDelete = useCallback((e: MapEvent) => {
-    console.log("ON DELETE", e);
-    // setFeatures((currFeatures) => {
-    //   const newFeatures = { ...currFeatures };
-    //   for (const f of e.features) {
-    //     delete newFeatures[f.id];
-    //   }
-    //   return newFeatures;
-    // });
-  }, []);
+  const onDelete = useCallback(
+    (e: { features: IFeature[] }) => {
+      // NOTE: this is dumb but it works
+      // For some reason the _id is being dropped (likely due to strict types) so we need to find the feature by the id
+      // Def not safe but it'll be a "next sprint" problem
+      if (!e?.features?.[0]?.properties?._id) return;
+      const feature = features.find(
+        (feat) => feat?.properties?._id === e.features[0].properties?._id
+      );
+      handleDelete(feature?._id || "");
+    },
+    [handleDelete, features]
+  );
 
   const onModeChange = useCallback((e: { mode: string }) => {
     console.log("ON MODE CHANGE", e);

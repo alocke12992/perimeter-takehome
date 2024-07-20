@@ -4,8 +4,9 @@ import MapBox from "../components/MapBox";
 import DrawFeatures from "../components/DrawFeatures";
 import { Box, Button, Flex, Input, Text } from "@chakra-ui/react";
 import { Geometry } from "geojson";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useCreateFeature } from "../hooks/useCreateFeature";
+import { useDeleteFeature } from "../hooks/useDeleteFeature";
 
 const SessionPage = () => {
   const [hasChanged, setHasChanged] = useState(false);
@@ -17,21 +18,21 @@ const SessionPage = () => {
   const { session } = useSession();
   const { isLoading, data } = useGetSessionFeatures(session?._id || "");
   const { createFeature } = useCreateFeature();
-  console.log(data);
-  const handleSetSelectedFeature = (
-    feature: GeoJSON.Feature<Geometry> | undefined
-  ) => {
-    if (!feature) {
-      setSelectedFeature(undefined);
-      setHasChanged(false);
-      return;
-    }
+  const { deleteFeature } = useDeleteFeature();
 
-    setSelectedFeature({
-      ...feature,
-    });
-  };
-  console.log("SELECTED FEATURE", selectedFeature);
+  const handleSetSelectedFeature = useCallback(
+    (feature: GeoJSON.Feature<Geometry> | undefined) => {
+      if (!feature) {
+        setSelectedFeature(undefined);
+        setHasChanged(false);
+        return;
+      }
+
+      setSelectedFeature(feature);
+    },
+    [setSelectedFeature]
+  );
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!selectedFeature) {
       return;
@@ -61,6 +62,15 @@ const SessionPage = () => {
     setHasChanged(false);
   };
 
+  const handleDelete = useCallback(
+    async (id: string) => {
+      await deleteFeature(id);
+      setSelectedFeature(undefined);
+      setHasChanged(false);
+    },
+    [deleteFeature, setSelectedFeature]
+  );
+
   if (isLoading || !data) {
     return null;
   }
@@ -72,6 +82,7 @@ const SessionPage = () => {
           <DrawFeatures
             features={data.features}
             setSelectedFeature={handleSetSelectedFeature}
+            handleDelete={handleDelete}
           />
         </MapBox>
       </Box>
