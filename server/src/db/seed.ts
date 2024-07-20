@@ -2,14 +2,14 @@ import "@src/pre-start"; // Must be the first import
 import Session from "@src/models/Session";
 import { faker } from "@faker-js/faker";
 import connect from "@src/db";
-import { mockPolygons, mockSession } from "./mocks";
+import { mockFeatures, mockSession } from "./mocks";
 import { Types } from "mongoose";
-import Polygon from "@src/models/Polygon";
+import Feature from "@src/models/Feature";
 
-const createPolygons = (sessionId: Types.ObjectId) => {
-  return mockPolygons.map((mockPolygon) => ({
+const createFeatures = (sessionId: Types.ObjectId) => {
+  return mockFeatures.map((mockFeatures) => ({
     sessionId,
-    ...mockPolygon,
+    ...mockFeatures,
   }));
 };
 
@@ -20,13 +20,13 @@ const seed = async () => {
     long: mockSession.long,
   });
   await session.save();
-  const polygons = createPolygons(session._id);
-  await Polygon.insertMany(polygons);
+  const features = createFeatures(session._id);
+  await Feature.insertMany(features);
 };
 
 const dropCollections = async () => {
   await Session.collection.drop();
-  await Polygon.collection.drop();
+  await Feature.collection.drop();
 };
 
 (async () => {

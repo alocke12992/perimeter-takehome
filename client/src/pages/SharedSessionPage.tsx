@@ -1,12 +1,12 @@
 import { useParams } from "react-router-dom";
-import { useGetSessionPolygons } from "../hooks/useGetSessionPolygons";
+import { useGetSessionFeatures } from "../hooks/useGetSessionFeatures";
 import MapBox from "../components/MapBox";
-import DisplayPolygons from "../components/DisplayPolygons";
+import DisplayFeatures from "../components/DisplayFeatures";
 
 const SessionPage = () => {
   const params = useParams();
 
-  const { isLoading, data } = useGetSessionPolygons(params?.id || "");
+  const { isLoading, data } = useGetSessionFeatures(params?.id || "");
 
   if (isLoading || !data) {
     return null;
@@ -15,7 +15,7 @@ const SessionPage = () => {
   return (
     <div>
       <MapBox lat={data.session.lat} long={data.session.long}>
-        <DisplayPolygons polygons={data.polygons} />
+        <DisplayFeatures features={data.features} />
       </MapBox>
     </div>
   );

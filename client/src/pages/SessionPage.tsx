@@ -1,11 +1,11 @@
-import { useGetSessionPolygons } from "../hooks/useGetSessionPolygons";
+import { useGetSessionFeatures } from "../hooks/useGetSessionFeatures";
 import useSession from "../hooks/useSession";
 import MapBox from "../components/MapBox";
-import DrawPolygons from "../components/DrawPolygons";
+import DrawFeatures from "../components/DrawFeatures";
 import { Box, Button, Flex, Input, Text } from "@chakra-ui/react";
 import { Geometry } from "geojson";
 import { useState } from "react";
-import { useCreatePolygon } from "../hooks/useCreatePolygon";
+import { useCreateFeature } from "../hooks/useCreateFeature";
 
 const SessionPage = () => {
   const [hasChanged, setHasChanged] = useState(false);
@@ -15,8 +15,8 @@ const SessionPage = () => {
 
   const [canSubmit, setCanSubmit] = useState(false);
   const { session } = useSession();
-  const { isLoading, data } = useGetSessionPolygons(session?._id || "");
-  const { createPolygon } = useCreatePolygon();
+  const { isLoading, data } = useGetSessionFeatures(session?._id || "");
+  const { createFeature } = useCreateFeature();
 
   const handleSetSelectedFeature = (
     feature: GeoJSON.Feature<Geometry> | undefined
@@ -55,7 +55,7 @@ const SessionPage = () => {
       return;
     }
     // TODO validate before submission
-    await createPolygon(selectedFeature);
+    await createFeature(selectedFeature);
     setCanSubmit(false);
     setHasChanged(false);
   };
@@ -68,8 +68,8 @@ const SessionPage = () => {
     <Flex h="100%" w="100%" flexDir="column">
       <Box flex="1">
         <MapBox lat={data.session.lat} long={data.session.long}>
-          <DrawPolygons
-            polygons={data.polygons}
+          <DrawFeatures
+            features={data.features}
             setSelectedFeature={handleSetSelectedFeature}
           />
         </MapBox>
@@ -92,14 +92,7 @@ const SessionPage = () => {
                 <Text mb="8px">Enter Name</Text>
                 <Input
                   value={selectedFeature?.properties?.name}
-                  onChange={(e) =>
-                    setSelectedFeature({
-                      ...selectedFeature,
-                      properties: {
-                        name: e.target.value,
-                      },
-                    })
-                  }
+                  onChange={handleInputChange}
                   placeholder="Here is a sample placeholder"
                   size="sm"
                 />

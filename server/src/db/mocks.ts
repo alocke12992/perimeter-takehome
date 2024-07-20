@@ -5,7 +5,7 @@ export const mockSession = {
   long: -159.34,
 }
 
-export const mockPolygons: GeoJSON.Feature<Polygon>[] = [
+export const mockFeatures: GeoJSON.Feature<Polygon>[] = [
   {
     id: "028562620a089aebb2b4e9ed5dde2b56",
     type: "Feature",

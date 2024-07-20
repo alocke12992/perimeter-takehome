@@ -7,12 +7,12 @@ export default {
   Sessions: {
     Base: "/sessions",
     Create: "/",
-    Polygons: {
-      List: "/:id/polygons", // TODO: Maybe just use polygons by session id list
+    Features: {
+      List: "/:id/features", // TODO: Maybe just use features by session id list
     },
   },
-  Polygons: {
-    Base: "/polygons",
+  Features: {
+    Base: "/features",
     Create: "/",
     List: "/",
     Update: "/:id",

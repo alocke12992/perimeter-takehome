@@ -6,7 +6,7 @@ export const mockSession = {
   long: -159.34,
 };
 
-const polygons: GeoJSON[] = [
+const polygons: GeoJSON.Feature[] = [
   {
     id: "028562620a089aebb2b4e9ed5dde2b56",
     type: "Feature",
@@ -22,7 +22,7 @@ const polygons: GeoJSON[] = [
           [-159.33946617863447, 22.083802295702256],
         ],
       ],
-      type: "Polygon",
+      type: "Feature",
     },
   },
   {
@@ -40,7 +40,7 @@ const polygons: GeoJSON[] = [
           [-159.37396674164427, 22.081143280976974],
         ],
       ],
-      type: "Polygon",
+      type: "Feature",
     },
   },
 ];

@@ -1,5 +1,5 @@
 import Paths from "../lib/Paths";
-import { IPolygon } from "./PolygonsApi";
+import { IFeature } from "./FeaturesApi";
 
 export interface ISession {
   lat: number;
@@ -27,19 +27,19 @@ const create = ({ lat, long }: CreateSessionBody): Promise<ISession> => {
     });
 };
 
-export type ListSessionPolygonsResponse = {
-  polygons: IPolygon[];
+export type ListSessionFeaturesResponse = {
+  features: IFeature[];
   session: ISession;
 };
 
-const listSessionPosts = (
+const listSessionFeatures = (
   id: string | undefined
-): Promise<ListSessionPolygonsResponse | undefined> => {
+): Promise<ListSessionFeaturesResponse | undefined> => {
   if (!id) {
     return Promise.resolve(undefined);
   }
 
-  return fetch(Paths.Api.Sessions.ListSessionPolygons(id))
+  return fetch(Paths.Api.Sessions.ListSessionFeatures(id))
     .then((res) => res.json())
     .then((res) => {
       return res;
@@ -48,5 +48,5 @@ const listSessionPosts = (
 
 export default {
   create,
-  listSessionPosts,
+  listSessionFeatures,
 };

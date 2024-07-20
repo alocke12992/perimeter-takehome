@@ -1,7 +1,7 @@
-import { Polygon } from "geojson";
+import { Feature } from "geojson";
 import Paths from "../lib/Paths";
 
-export interface IPolygon extends GeoJSON.Feature<Polygon> {
+export interface IFeature extends GeoJSON.Feature<Feature> {
   sessionId: string;
   _id: string;
 }

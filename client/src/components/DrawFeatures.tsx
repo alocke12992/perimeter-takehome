@@ -1,18 +1,19 @@
-import { Geometry, Polygon } from "geojson";
-import { useCallback, FC, useRef, useState } from "react";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import { Geometry } from "geojson";
+import { useCallback, FC, useRef } from "react";
 import { MapEvent } from "mapbox-gl";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import { useControl } from "react-map-gl";
 
 type Props = {
-  polygons: GeoJSON.Feature<Polygon>[];
+  features: GeoJSON.Feature[];
   setSelectedFeature: (feature?: GeoJSON.Feature<Geometry>) => void;
 };
 
-const DrawPolygons: FC<Props> = ({ polygons, setSelectedFeature }) => {
+const DrawFeatures: FC<Props> = ({ features, setSelectedFeature }) => {
   const drawRef = useRef<MapboxDraw | null>(null); // Ref need
   // const [selectedFeature, setSelectedFeature] =
-  //   useState<GeoJSON.Feature<Polygon> | null>(null);
+  //   useState<GeoJSON.Feature<Feature> | null>(null);
 
   const onUpdate = useCallback((e: MapEvent) => {
     console.log("ON UPDATE", e);
@@ -34,6 +35,8 @@ const DrawPolygons: FC<Props> = ({ polygons, setSelectedFeature }) => {
 
   const onCreate = useCallback((e: { features: object[] }) => {
     if (!e?.features) return;
+    // TODO: fix this
+    // @ts-ignore
     setSelectedFeature(e.features[0]);
   }, []);
 
@@ -54,17 +57,17 @@ const DrawPolygons: FC<Props> = ({ polygons, setSelectedFeature }) => {
 
   const onLoadDraw = useCallback(
     (drawInstance: MapboxDraw | null) => {
-      if (!drawInstance || !polygons.length) return;
+      if (!drawInstance || !features.length) return;
 
-      polygons.forEach((polygon) => {
-        drawInstance.add(polygon);
-        // const polygonId = polygon.id;
-        // drawInstance.changeMode("simple_select", { featureId: polygonId });
+      features.forEach((features) => {
+        drawInstance.add(features);
       });
     },
-    [polygons]
+    [features]
   );
 
+  // TODO: fix this
+  // @ts-ignore
   useControl<MapboxDraw>(
     () => {
       const draw = new MapboxDraw({
@@ -104,22 +107,6 @@ const DrawPolygons: FC<Props> = ({ polygons, setSelectedFeature }) => {
   );
 
   return null;
-
-  // return (
-  //   <DrawControl
-  //     position="top-left"
-  //     displayControlsDefault={false}
-  //     controls={{
-  //       polygon: true,
-  //       trash: true,
-  //     }}
-  //     defaultMode="draw_polygon"
-  //     onCreate={onCreate}
-  //     onLoad={onLoadDraw}
-  //     onUpdate={onUpdate}
-  //     onDelete={onDelete}
-  //   />
-  // );
 };
 
-export default DrawPolygons;
+export default DrawFeatures;

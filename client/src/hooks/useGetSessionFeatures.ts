@@ -1,16 +1,16 @@
 import { useQuery } from "react-query";
 import SessionsApi from "../api/SessionsApi";
 
-export const useGetSessionPolygons = (id: string) => {
+export const useGetSessionFeatures = (id: string) => {
   const { data, error, isLoading } = useQuery(
-    ["getSessionPolygons", id],
+    ["getSessionFeatures", id],
     () => {
       if (!id) {
         return;
       }
 
-      return SessionsApi.listSessionPosts(id);
-    },
+      return SessionsApi.listSessionFeatures(id);
+    }
   );
   return {
     data,

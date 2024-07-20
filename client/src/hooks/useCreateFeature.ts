@@ -1,10 +1,10 @@
 import { useMutation } from "react-query";
-import PolygonsApi from "../api/PolygonsApi";
+import FeaturesApi from "../api/FeaturesApi";
 
-export const useCreatePolygon = () => {
+export const useCreateFeature = () => {
   const { data, error, isLoading, mutate } = useMutation(
     ["createPolygon"],
-    async (feature: GeoJSON.Feature) => await PolygonsApi.create(feature),
+    async (feature: GeoJSON.Feature) => await FeaturesApi.create(feature),
     {
       onError: () => {
         // TODO - Global error context??
@@ -16,6 +16,6 @@ export const useCreatePolygon = () => {
     data,
     error,
     isLoading,
-    createPolygon: mutate,
+    createFeature: mutate,
   };
 };

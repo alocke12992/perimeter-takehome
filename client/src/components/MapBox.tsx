@@ -13,10 +13,6 @@ const MapBox: FC<Props> = ({ children, lat, long }) => {
     <Map
       mapboxAccessToken={EnvVars.MapBoxToken}
       mapStyle="mapbox://styles/mapbox/streets-v11"
-      style={{
-        // width: "100vh",
-        // height: "100vh",
-      }}
       initialViewState={{
         longitude: long,
         latitude: lat,

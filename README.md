@@ -3,7 +3,8 @@
 ## TODO
 ### General
 [] Shared types across repos
-[] Change polygon naming to "features"
+[x] Change polygon naming to "features"
+[] Possibly combine session with features?
 
 ### BE
 [] Validation on polygon

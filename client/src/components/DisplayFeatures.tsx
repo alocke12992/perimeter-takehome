@@ -1,17 +1,16 @@
 import { FC } from "react";
 import { Layer, Source } from "react-map-gl";
-import { Polygon } from "geojson";
 
 export type Props = {
-  polygons: GeoJSON.Feature<Polygon>[];
+  features: GeoJSON.Feature[];
 };
 
-const DisplayPolygons: FC<Props> = ({ polygons }) => {
+const DisplayFeatures: FC<Props> = ({ features }) => {
   return (
     <Source
       id="view-layer"
       type="geojson"
-      data={{ type: "FeatureCollection", features: polygons }}
+      data={{ type: "Features", features }}
     >
       <Layer
         type="fill"
@@ -25,4 +24,4 @@ const DisplayPolygons: FC<Props> = ({ polygons }) => {
   );
 };
 
-export default DisplayPolygons;
+export default DisplayFeatures;
