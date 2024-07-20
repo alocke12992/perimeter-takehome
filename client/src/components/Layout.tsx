@@ -13,13 +13,14 @@ const Layout: FC<Props> = ({ children }) => {
       gap="1"
       overflow="hidden"
       height="100vh"
+      width="100vw"
     >
       <GridItem area={"nav"}>
         <Flex w="full" h="70px">
           Nav
         </Flex>
       </GridItem>
-      <GridItem area={"main"} overflow="auto" pb="200px">
+      <GridItem area={"main"} overflow="auto">
         {children}
       </GridItem>
     </Grid>

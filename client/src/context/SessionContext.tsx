@@ -2,6 +2,7 @@ import { FC, createContext, ReactNode, useEffect, useCallback } from "react";
 import { ISession } from "../api/SessionsApi";
 import { useCreateSession } from "../hooks/useCreateSession";
 import useLocalStorage from "../hooks/useLocalStorage";
+import { mockSession } from "../lib/mocks";
 
 export interface ISessionContext {
   isLoading: boolean;
@@ -22,7 +23,10 @@ const SessionProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { createSession, isLoading } = useCreateSession();
 
   const handleCreateSession = useCallback(async () => {
-    const res = await createSession({ lat: 0, long: 0 });
+    const res = await createSession({
+      lat: mockSession.lat,
+      long: mockSession.long,
+    });
     setLocalStorageSession(res);
   }, [createSession, setLocalStorageSession]);
 

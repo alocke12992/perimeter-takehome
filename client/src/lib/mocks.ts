@@ -1,5 +1,11 @@
 import { GeoJSON } from "geojson";
 
+// TODO clean up
+export const mockSession = {
+  lat: 22.07,
+  long: -159.34,
+};
+
 const polygons: GeoJSON[] = [
   {
     id: "028562620a089aebb2b4e9ed5dde2b56",

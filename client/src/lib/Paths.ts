@@ -15,6 +15,9 @@ const Paths = {
       ListSessionPolygons: (id: string) =>
         `${EnvVars.ApiUrl}/sessions/${id}/polygons`,
     },
+    Features: {
+      Create: () => `${EnvVars.ApiUrl}/features`,
+    },
   },
   Views: {
     Session: () => `/`,
