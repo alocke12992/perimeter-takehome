@@ -3,6 +3,7 @@
 ## TODO
 ### General
 [] Shared types across repos
+[] Change polygon naming to "features"
 
 ### BE
 [] Validation on polygon
@@ -11,8 +12,12 @@
 [] Dynamically generate fake polygons
 
 ### FE
-[] Session context
+[x] Session context
 [] Request user location & set as init coordinates
+[] Fix mapbox draw event type errors
+
+### Extras
+[] Add a recenter button
 
 
 ## Thoughts

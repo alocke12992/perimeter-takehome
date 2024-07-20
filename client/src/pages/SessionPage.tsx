@@ -1,19 +1,20 @@
 import { useGetSessionPolygons } from "../hooks/useGetSessionPolygons";
 import useSession from "../hooks/useSession";
+import MapBox from "../components/MapBox";
+import DrawPolygons from "../components/DrawPolygons";
 
 const SessionPage = () => {
   const { session } = useSession();
   const { isLoading, data } = useGetSessionPolygons(session?._id || "");
-  console.log(data);
 
-  if (isLoading) {
+  if (isLoading || !data) {
     return null;
   }
 
   return (
-    <div>
-      <h1>Session Page</h1>
-    </div>
+    <MapBox lat={data.session.lat} long={data.session.long}>
+      <DrawPolygons polygons={data.polygons} />
+    </MapBox>
   );
 };
 

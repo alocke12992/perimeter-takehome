@@ -1,11 +1,6 @@
-import { Polygon } from "geojson";
+import { GeoJSON } from "geojson";
 
-export const mockSession = {
-  lat: 22.07,
-  long: -159.34,
-}
-
-export const mockPolygons: GeoJSON.Feature<Polygon>[] = [
+const polygons: GeoJSON[] = [
   {
     id: "028562620a089aebb2b4e9ed5dde2b56",
     type: "Feature",
@@ -44,3 +39,4 @@ export const mockPolygons: GeoJSON.Feature<Polygon>[] = [
   },
 ];
 
+export default polygons;
