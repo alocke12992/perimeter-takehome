@@ -1,7 +1,7 @@
-import GeoJSON from "geojson";
+import GeoJSON, { Polygon } from "geojson";
 import { Schema, Types, model } from "mongoose";
 
-export interface IFeature extends GeoJSON.Feature {
+export interface IFeature extends GeoJSON.Feature<Polygon> {
   sessionId: Types.ObjectId;
 }
 

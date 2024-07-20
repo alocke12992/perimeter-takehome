@@ -1,6 +1,6 @@
 import { Router } from "express";
 import SessionRoutes from "./SessionRoutes";
-import PolygonRoutes from "./FeaturesRoutes";
+import FeatureRoutes from "./FeaturesRoutes";
 import Paths from "@src/common/Paths";
 
 // **** Routers **** //
@@ -18,10 +18,10 @@ sessionRouter.get(
 
 // TODO validate polygon
 // TODO validate session
-featureRouter.get(Paths.Features.List, PolygonRoutes.list);
-featureRouter.put(Paths.Features.Update, PolygonRoutes.update);
-featureRouter.post(Paths.Features.Create, PolygonRoutes.create);
-featureRouter.delete(Paths.Features.Delete, PolygonRoutes.remove);
+featureRouter.get(Paths.Features.List, FeatureRoutes.list);
+featureRouter.put(Paths.Features.Update, FeatureRoutes.update);
+featureRouter.post(Paths.Features.Create, FeatureRoutes.create);
+featureRouter.delete(Paths.Features.Delete, FeatureRoutes.remove);
 
 // REGISTER ROUTES
 apiRouter.use(Paths.Sessions.Base, sessionRouter);

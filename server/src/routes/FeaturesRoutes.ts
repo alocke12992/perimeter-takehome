@@ -5,14 +5,10 @@ import { IFeature } from "@src/models/Feature";
 import FeaturesController from "@src/controllers/FeaturesController";
 
 const create = async (req: IReq<IFeature>, res: IRes) => {
-  const { sessionId, geometry, properties } = req.body;
-  await FeaturesController.create({
-    properties,
-    sessionId,
-    geometry,
-    type: "Feature",
-  });
-  return res.status(HttpStatusCodes.CREATED).end();
+  await FeaturesController.create(req.body);
+  return res
+    .status(HttpStatusCodes.CREATED)
+    .json({ message: "Feature created" });
 };
 
 const list = async (req: IReq, res: IRes) => {
@@ -21,20 +17,13 @@ const list = async (req: IReq, res: IRes) => {
 };
 
 const update = async (req: IReq<IFeature>, res: IRes) => {
-  const { sessionId, geometry, properties } = req.body;
-
-  await FeaturesController.update(new ObjectId(req.params.id), {
-    properties,
-    sessionId,
-    geometry,
-    type: "Feature",
-  });
-  return res.status(HttpStatusCodes.CREATED).end();
+  await FeaturesController.update(new ObjectId(req.params.id), req.body);
+  return res.status(HttpStatusCodes.CREATED).send();
 };
 
 const remove = async (req: IReq, res: IRes) => {
   await FeaturesController.remove(new ObjectId(req.params.id));
-  return res.status(HttpStatusCodes.NO_CONTENT).end();
+  return res.status(HttpStatusCodes.NO_CONTENT).send();
 };
 
 export default {

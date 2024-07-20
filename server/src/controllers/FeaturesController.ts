@@ -2,9 +2,8 @@ import { Types } from "mongoose";
 import Feature, { IFeature } from "@src/models/Feature";
 
 const create = async (feature: IFeature): Promise<void> => {
-  const newPolygon = new Feature(feature);
-  await newPolygon.save();
-  return;
+  const newFeature = new Feature(feature);
+  await newFeature.save();
 };
 
 const list = async (): Promise<IFeature[]> => {

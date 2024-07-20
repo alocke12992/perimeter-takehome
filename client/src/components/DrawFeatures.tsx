@@ -57,7 +57,7 @@ const DrawFeatures: FC<Props> = ({ features, setSelectedFeature }) => {
 
   const onLoadDraw = useCallback(
     (drawInstance: MapboxDraw | null) => {
-      if (!drawInstance || !features.length) return;
+      if (!drawInstance || !features?.length) return;
 
       features.forEach((features) => {
         drawInstance.add(features);

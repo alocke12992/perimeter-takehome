@@ -17,7 +17,7 @@ const SessionPage = () => {
   const { session } = useSession();
   const { isLoading, data } = useGetSessionFeatures(session?._id || "");
   const { createFeature } = useCreateFeature();
-
+  console.log(data);
   const handleSetSelectedFeature = (
     feature: GeoJSON.Feature<Geometry> | undefined
   ) => {
@@ -54,8 +54,12 @@ const SessionPage = () => {
     if (!selectedFeature) {
       return;
     }
+    console.log("Submitting", selectedFeature);
     // TODO validate before submission
-    await createFeature(selectedFeature);
+    await createFeature({
+      feature: selectedFeature,
+      sessionId: session?._id || "",
+    });
     setCanSubmit(false);
     setHasChanged(false);
   };

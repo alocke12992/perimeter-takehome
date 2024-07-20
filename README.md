@@ -3,12 +3,11 @@
 ## TODO
 ### General
 [] Shared types across repos
-[x] Change polygon naming to "features"
-[] Possibly combine session with features?
+[] combine session with features?
 
 ### BE
 [] Validation on polygon
-[] Validate sessionId is allowed to edit/update polygon
+[] Validate sessionId is allowed to edit/update features
 [] Implement unit tests for controllers
 [] Dynamically generate fake polygons
 

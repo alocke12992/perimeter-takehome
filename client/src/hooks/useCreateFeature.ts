@@ -4,7 +4,13 @@ import FeaturesApi from "../api/FeaturesApi";
 export const useCreateFeature = () => {
   const { data, error, isLoading, mutate } = useMutation(
     ["createPolygon"],
-    async (feature: GeoJSON.Feature) => await FeaturesApi.create(feature),
+    async ({
+      feature,
+      sessionId,
+    }: {
+      feature: GeoJSON.Feature;
+      sessionId: string;
+    }) => await FeaturesApi.create(feature, sessionId),
     {
       onError: () => {
         // TODO - Global error context??
