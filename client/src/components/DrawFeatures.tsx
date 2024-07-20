@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { Geometry } from "geojson";
 import { useCallback, FC, useRef } from "react";
 import { MapEvent } from "mapbox-gl";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import { useControl } from "react-map-gl";
+import { Geometry, Polygon } from "geojson";
 
 type Props = {
-  features: GeoJSON.Feature[];
+  features: GeoJSON.Feature<Polygon>[];
   setSelectedFeature: (feature?: GeoJSON.Feature<Geometry>) => void;
 };
 
@@ -30,13 +30,12 @@ const DrawFeatures: FC<Props> = ({ features, setSelectedFeature }) => {
     if (!drawRef.current) return;
     const selected = drawRef.current.getSelectedIds();
     const feature = drawRef.current.get(selected?.[0]);
+    console.log("ON CLICK", feature);
     setSelectedFeature(feature);
   }, []);
 
-  const onCreate = useCallback((e: { features: object[] }) => {
+  const onCreate = useCallback((e: { features: GeoJSON.Feature[] }) => {
     if (!e?.features) return;
-    // TODO: fix this
-    // @ts-ignore
     setSelectedFeature(e.features[0]);
   }, []);
 
@@ -55,16 +54,15 @@ const DrawFeatures: FC<Props> = ({ features, setSelectedFeature }) => {
     console.log("ON MODE CHANGE", e);
   }, []);
 
-  const onLoadDraw = useCallback(
-    (drawInstance: MapboxDraw | null) => {
-      if (!drawInstance || !features?.length) return;
+  const onLoadDraw = useCallback(() => {
+    if (!features?.length) return;
 
-      features.forEach((features) => {
-        drawInstance.add(features);
-      });
-    },
-    [features]
-  );
+    features.forEach((feature) => {
+      if (!drawRef?.current) return;
+      console.log("ADDING FEATURE", feature);
+      drawRef?.current.add(feature);
+    });
+  }, [features]);
 
   // TODO: fix this
   // @ts-ignore
@@ -83,7 +81,7 @@ const DrawFeatures: FC<Props> = ({ features, setSelectedFeature }) => {
     },
     ({ map }) => {
       if (drawRef?.current) {
-        map.on("load", () => onLoadDraw(drawRef?.current));
+        map.on("load", onLoadDraw);
       }
 
       map.on("click", onClick);

@@ -15,6 +15,8 @@
 [x] Session context
 [] Request user location & set as init coordinates
 [] Fix mapbox draw event type errors
+[] Reset on click away if not saved
+[] 
 
 ### Extras
 [] Add a recenter button

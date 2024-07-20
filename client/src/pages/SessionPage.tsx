@@ -29,12 +29,9 @@ const SessionPage = () => {
 
     setSelectedFeature({
       ...feature,
-      properties: {
-        name: "",
-      },
     });
   };
-
+  console.log("SELECTED FEATURE", selectedFeature);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!selectedFeature) {
       return;
