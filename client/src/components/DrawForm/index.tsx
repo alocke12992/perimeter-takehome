@@ -1,9 +1,9 @@
 import MapBox from "../../components/MapBox";
 import DrawFeatures from "./components/DrawFeatures";
+import FeatureForm from "./components/EditFeaturesForm";
 import { Box, Flex } from "@chakra-ui/react";
 import { Polygon } from "geojson";
-import { useCallback, FC, useEffect, useRef, useState } from "react";
-import FeatureForm from "../../components/FeatureForm";
+import { useCallback, FC, useRef, useState } from "react";
 import { ISession } from "../../api/SessionsApi";
 import { IFeature } from "../../api/FeaturesApi";
 
@@ -32,10 +32,6 @@ const DrawForm: FC<Props> = ({
   const [selectedFeature, setSelectedFeature] = useState<
     GeoJSON.Feature | undefined
   >(undefined);
-
-  useEffect(() => {
-    console.log("FERATURES updated", session.features);
-  }, [session.features]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!selectedFeature) return;
@@ -89,7 +85,6 @@ const DrawForm: FC<Props> = ({
 
     const feature = drawRef.current.get(selected[0]);
     if (!feature) return;
-    console.log("ON CLICK FEATURE", feature);
     selectedElm.current = feature as GeoJSON.Feature<Polygon>;
     setSelectedFeature(feature);
   }, [resetElm]);
@@ -118,7 +113,6 @@ const DrawForm: FC<Props> = ({
 
   const handleUpdateDraw = useCallback(
     (feature: IFeature) => {
-      console.log("UPDATING DRAW", { feature, selectedElm });
       if (!feature || !selectedElm?.current?.id) {
         return;
       }
@@ -136,7 +130,6 @@ const DrawForm: FC<Props> = ({
   );
 
   const handleSubmit = async () => {
-    // console.log("Submitting", selectedFeature);
     if (!selectedElm?.current?.id) {
       return;
     }
@@ -147,10 +140,7 @@ const DrawForm: FC<Props> = ({
     if (!drawFeature) {
       return;
     }
-    console.log("Selected feature", { selectedFeature, drawFeature });
-    // console.log("Submitting", selectedFeature);
     if (selectedFeature?.properties?.featureId) {
-      console.log("ALREADY SAVED");
       const updated = await updateFeature({
         ...selectedFeature,
         session: session._id,
@@ -161,7 +151,6 @@ const DrawForm: FC<Props> = ({
       } as IFeature);
       return handleUpdateDraw(updated);
     }
-    console.log("NEW FEATURE");
 
     // TODO validate before submission
     const updated = await createFeature({
@@ -218,7 +207,6 @@ const DrawForm: FC<Props> = ({
 
   const onLoadDraw = useCallback(() => {
     if (!session.features?.length) return;
-    console.log("LOADING FEATURES", session.features);
     session.features.forEach((feature) => {
       if (!drawRef?.current) return;
       drawRef?.current.add({
