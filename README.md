@@ -16,7 +16,7 @@
 [] Request user location & set as init coordinates
 [] Fix mapbox draw event type errors
 [] Reset on click away if not saved
-[] 
+[] Fix 
 
 ### Extras
 [] Add a recenter button

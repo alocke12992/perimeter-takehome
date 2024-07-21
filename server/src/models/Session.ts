@@ -4,6 +4,7 @@ export interface ISession {
   lat: number;
   long: number;
   createdAt: Date;
+  features: Schema.Types.ObjectId[];
 }
 
 const SessionSchema = new Schema<ISession>({
@@ -19,6 +20,13 @@ const SessionSchema = new Schema<ISession>({
     type: Date,
     default: Date.now,
   },
+  features: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Feature",
+      default: [],
+    },
+  ],
 });
 
 export default model<ISession>("Session", SessionSchema);

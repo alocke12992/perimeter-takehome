@@ -1,16 +1,7 @@
 import GeoJSON, { Polygon } from "geojson";
 import { Schema, Types, model } from "mongoose";
 
-export interface IFeature extends GeoJSON.Feature<Polygon> {
-  sessionId: Types.ObjectId;
-}
-
-const FeatureSchema = new Schema<IFeature>({
-  sessionId: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    ref: "Session",
-  },
+const FeatureSchema = new Schema<GeoJSON.Feature<Polygon>>({
   type: {
     type: String,
     enum: ["Feature"],
@@ -39,4 +30,4 @@ const FeatureSchema = new Schema<IFeature>({
   },
 });
 
-export default model<IFeature>("Feature", FeatureSchema);
+export default model<GeoJSON.Feature<Polygon>>("Feature", FeatureSchema);

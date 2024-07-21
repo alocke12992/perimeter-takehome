@@ -3,25 +3,32 @@ import Session from "@src/models/Session";
 import { faker } from "@faker-js/faker";
 import connect from "@src/db";
 import { mockFeatures, mockSession } from "./mocks";
-import { Types } from "mongoose";
 import Feature from "@src/models/Feature";
 
-const createFeatures = (sessionId: Types.ObjectId) => {
-  return mockFeatures.map((mockFeatures) => ({
-    sessionId,
-    ...mockFeatures,
-  }));
+const createFeatures = async () => {
+  const features = mockFeatures.map(
+    (mockFeature) =>
+      new Feature({
+        ...mockFeature,
+        properties: {
+          name: faker.location.city(),
+        },
+      })
+  );
+  return await Feature.insertMany(features);
 };
 
 const seed = async () => {
   await connect();
+  const features = await createFeatures();
+
   const session = new Session({
     lat: mockSession.lat,
     long: mockSession.long,
+    features: features.map((feature) => feature._id),
   });
+
   await session.save();
-  const features = createFeatures(session._id);
-  await Feature.insertMany(features);
 };
 
 const dropCollections = async () => {

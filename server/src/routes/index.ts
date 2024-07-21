@@ -11,10 +11,7 @@ const featureRouter = Router();
 // **** Routes **** //
 // TODO validation
 sessionRouter.post(Paths.Sessions.Create, SessionRoutes.create);
-sessionRouter.get(
-  Paths.Sessions.Features.List,
-  SessionRoutes.listSessionFeatures
-);
+sessionRouter.get(Paths.Sessions.Get, SessionRoutes.get);
 
 // TODO validate polygon
 // TODO validate session

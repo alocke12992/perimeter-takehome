@@ -7,9 +7,7 @@ export default {
   Sessions: {
     Base: "/sessions",
     Create: "/",
-    Features: {
-      List: "/:id/features", // TODO: Maybe just use features by session id list
-    },
+    Get: "/:id",
   },
   Features: {
     Base: "/features",
@@ -17,5 +15,5 @@ export default {
     List: "/",
     Update: "/:id",
     Delete: "/:id",
-  }
+  },
 } as const;
