@@ -3,63 +3,39 @@ import { useCallback, FC, useRef } from "react";
 import { MapEvent } from "mapbox-gl";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import { useControl } from "react-map-gl";
-import { Geometry } from "geojson";
+import { Geometry, Polygon } from "geojson";
 import { IFeature } from "../api/FeaturesApi";
 
 type Props = {
   features: IFeature[];
-  setSelectedFeature: (feature?: GeoJSON.Feature<Geometry>) => void;
+  setSelectedFeature: (feature?: GeoJSON.Feature<Polygon>) => void;
   handleDelete: (id: string) => void;
+  handleSelect: (id: string) => void;
+  handleCreate: (e: { features: GeoJSON.Feature<Polygon> }) => void;
+  handleClick: (e: MapEvent) => void;
+  drawRef: React.MutableRefObject<MapboxDraw | null>;
 };
 
 const DrawFeatures: FC<Props> = ({
   features,
   setSelectedFeature,
   handleDelete,
+  handleSelect,
+  handleClick,
+  handleCreate,
+  drawRef,
 }) => {
-  const drawRef = useRef<MapboxDraw | null>(null); // Ref need
-  // const [selectedFeature, setSelectedFeature] =
-  //   useState<GeoJSON.Feature<Feature> | null>(null);
-
   const onUpdate = useCallback((e: MapEvent) => {
     console.log("ON UPDATE", e);
-    // setFeatures((currFeatures) => {
-    //   const newFeatures = { ...currFeatures };
-    //   for (const f of e.features) {
-    //     newFeatures[f.id] = f;
-    //   }
-    //   return newFeatures;
-    // });
   }, []);
-
-  const onClick = useCallback(() => {
-    if (!drawRef.current) return;
-    const selected = drawRef.current.getSelectedIds();
-    const feature = drawRef.current.get(selected?.[0]);
-    console.log("ON CLICK", feature);
-    setSelectedFeature(feature);
-  }, [setSelectedFeature]);
-
-  const onCreate = useCallback(
-    (e: { features: IFeature[] }) => {
-      if (!e?.features) return;
-      setSelectedFeature(e.features[0]);
-    },
-    [setSelectedFeature]
-  );
 
   const onDelete = useCallback(
     (e: { features: IFeature[] }) => {
-      // NOTE: this is dumb but it works
-      // For some reason the _id is being dropped (likely due to strict types) so we need to find the feature by the id
-      // Def not safe but it'll be a "next sprint" problem
-      if (!e?.features?.[0]?.properties?._id) return;
-      const feature = features.find(
-        (feat) => feat?.properties?._id === e.features[0].properties?._id
-      );
-      handleDelete(feature?._id || "");
+      if (!e.features[0].properties?.featureId) return;
+      handleDelete(e.features[0].properties.featureId);
+      return;
     },
-    [handleDelete, features]
+    [handleDelete]
   );
 
   const onModeChange = useCallback((e: { mode: string }) => {
@@ -72,7 +48,14 @@ const DrawFeatures: FC<Props> = ({
     features.forEach((feature) => {
       if (!drawRef?.current) return;
       console.log("ADDING FEATURE", feature);
-      drawRef?.current.add(feature);
+      drawRef?.current.add({
+        ...feature,
+        properties: {
+          ...feature.properties,
+          // We lose the _id when we add the feature to the map so we can reference data we're getting from the backend
+          featureId: feature._id,
+        },
+      });
     });
   }, [features]);
 
@@ -96,8 +79,8 @@ const DrawFeatures: FC<Props> = ({
         map.on("load", onLoadDraw);
       }
 
-      map.on("click", onClick);
-      map.on("draw.create", onCreate);
+      map.on("click", handleClick);
+      map.on("draw.create", handleCreate);
       map.on("draw.selectionChange", (e) => {
         console.log("selectionChange", e);
       });
@@ -107,7 +90,8 @@ const DrawFeatures: FC<Props> = ({
     },
     ({ map }) => {
       map.off("load", onLoadDraw);
-      map.off("draw.create", onCreate);
+      map.off("click", handleClick);
+      map.off("draw.create", handleCreate);
       map.off("draw.update", onUpdate);
       map.off("draw.delete", onDelete);
     },
