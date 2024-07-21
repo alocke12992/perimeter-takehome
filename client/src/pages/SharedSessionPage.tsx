@@ -1,12 +1,12 @@
 import { useParams } from "react-router-dom";
-import { useGetSessionFeatures } from "../hooks/useGetSessionFeatures";
+import { useGetSession } from "../hooks/useGetSession";
 import MapBox from "../components/MapBox";
 import DisplayFeatures from "../components/DisplayFeatures";
 
 const SessionPage = () => {
   const params = useParams();
 
-  const { isLoading, data } = useGetSessionFeatures(params?.id || "");
+  const { isLoading, data } = useGetSession(params?.id || "");
 
   if (isLoading || !data) {
     return null;
@@ -14,7 +14,7 @@ const SessionPage = () => {
 
   return (
     <div>
-      <MapBox lat={data.session.lat} long={data.session.long}>
+      <MapBox lat={data.lat} long={data.long}>
         <DisplayFeatures features={data.features} />
       </MapBox>
     </div>

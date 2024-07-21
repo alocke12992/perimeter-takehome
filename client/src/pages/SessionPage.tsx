@@ -1,22 +1,22 @@
-import { useGetSessionFeatures } from "../hooks/useGetSessionFeatures";
-import useSession from "../hooks/useSession";
+import { useGetSession } from "../hooks/useGetSession";
 import MapBox from "../components/MapBox";
 import DrawFeatures from "../components/DrawFeatures";
 import { Box, Button, Flex, Input, Text } from "@chakra-ui/react";
 import { Geometry } from "geojson";
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { useCreateFeature } from "../hooks/useCreateFeature";
 import { useDeleteFeature } from "../hooks/useDeleteFeature";
+import { SessionContext } from "../context/SessionContext";
 
 const SessionPage = () => {
   const [hasChanged, setHasChanged] = useState(false);
+  const [canSubmit, setCanSubmit] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState<
     GeoJSON.Feature | undefined
   >();
 
-  const [canSubmit, setCanSubmit] = useState(false);
-  const { session } = useSession();
-  const { isLoading, data } = useGetSessionFeatures(session?._id || "");
+  const { sessionId } = useContext(SessionContext);
+  const { isLoading, data } = useGetSession(sessionId);
   const { createFeature } = useCreateFeature();
   const { deleteFeature } = useDeleteFeature();
 
@@ -56,7 +56,7 @@ const SessionPage = () => {
     // TODO validate before submission
     await createFeature({
       feature: selectedFeature,
-      sessionId: session?._id || "",
+      session: sessionId,
     });
     setCanSubmit(false);
     setHasChanged(false);
@@ -78,7 +78,7 @@ const SessionPage = () => {
   return (
     <Flex h="100%" w="100%" flexDir="column">
       <Box flex="1">
-        <MapBox lat={data.session.lat} long={data.session.long}>
+        <MapBox lat={data.lat} long={data.long}>
           <DrawFeatures
             features={data.features}
             setSelectedFeature={handleSetSelectedFeature}

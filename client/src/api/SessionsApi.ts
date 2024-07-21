@@ -36,7 +36,7 @@ const get = (id: string | undefined): Promise<ISession | undefined> => {
   return fetch(Paths.Api.Sessions.Get(id))
     .then((res) => res.json())
     .then((res) => {
-      return res;
+      return res.session;
     });
 };
 

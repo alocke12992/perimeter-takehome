@@ -12,11 +12,10 @@ const Paths = {
   Api: {
     Sessions: {
       Create: () => `${EnvVars.ApiUrl}/sessions`,
-      ListSessionFeatures: (id: string) =>
-        `${EnvVars.ApiUrl}/sessions/${id}/features`,
+      Get: (id: string) => `${EnvVars.ApiUrl}/sessions/${id}`,
     },
     Features: {
-      Create: () => `${EnvVars.ApiUrl}/features`,
+      Create: () => `${EnvVars.ApiUrl}/features/`,
       Remove: (id: string) => `${EnvVars.ApiUrl}/features/${id}`,
     },
   },
