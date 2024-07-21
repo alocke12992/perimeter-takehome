@@ -14,10 +14,10 @@ import { useEffect, useRef, useState } from "react";
 
 const useLocalStorage = <T>(
   key: string,
-  defaultValue?: T,
+  defaultValue: T,
   overWrite = false
 ) => {
-  const [value, setValue] = useState<T | undefined>(() => {
+  const [value, setValue] = useState<T>(() => {
     if (typeof window === "undefined")
       throw new Error("localStorage can be used only in client side");
     if (overWrite) return defaultValue;
@@ -39,7 +39,6 @@ const useLocalStorage = <T>(
   const previousKeyRef = useRef<string>("");
 
   useEffect(() => {
-    console.log("useEffect", { key, value, defaultValue });
     const previousKey = previousKeyRef.current;
 
     if (previousKey !== key && previousKey) {

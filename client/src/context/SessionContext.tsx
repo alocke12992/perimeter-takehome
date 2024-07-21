@@ -1,47 +1,47 @@
 import { FC, createContext, ReactNode, useEffect, useCallback } from "react";
-import { ISession } from "../api/SessionsApi";
 import { useCreateSession } from "../hooks/useCreateSession";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { mockSession } from "../lib/mocks";
 
 export interface ISessionContext {
-  isLoading: boolean;
-  session: ISession | undefined;
+  sessionId: string;
 }
 
 const initState: ISessionContext = {
-  isLoading: true,
-  session: undefined,
+  sessionId: "",
 };
 
 export const SessionContext = createContext<ISessionContext>(initState);
 
 const SessionProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [localStorageSession, setLocalStorageSession] =
-    useLocalStorage<ISession>("session", undefined, false);
+  const [sessionId, setSessionId] = useLocalStorage<string>(
+    "sessionId",
+    "",
+    false
+  );
 
-  const { createSession, isLoading } = useCreateSession();
+  const { createSession } = useCreateSession();
 
   const handleCreateSession = useCallback(async () => {
     const res = await createSession({
       lat: mockSession.lat,
       long: mockSession.long,
     });
-    setLocalStorageSession(res);
-  }, [createSession, setLocalStorageSession]);
+    setSessionId(res?._id);
+  }, [createSession, setSessionId]);
 
   useEffect(() => {
-    if (!localStorageSession) {
+    if (!sessionId) {
       handleCreateSession();
       return;
     }
-  }, [localStorageSession, isLoading, handleCreateSession]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sessionId]);
 
   return (
     <SessionContext.Provider
       value={{
-        isLoading,
-        session: localStorageSession,
+        sessionId,
       }}
     >
       {children}
