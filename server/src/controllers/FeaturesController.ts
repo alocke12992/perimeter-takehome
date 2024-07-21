@@ -3,7 +3,7 @@ import Feature, { IFeature } from "@src/models/Feature";
 import Session from "@src/models/Session";
 import { ObjectId } from "mongodb";
 
-const create = async (feature: IFeature): Promise<void> => {
+const create = async (feature: IFeature): Promise<IFeature> => {
   console.log("feature", feature);
   const sessionId = new ObjectId(feature.session);
   const session = await Session.findById(sessionId);
@@ -20,7 +20,7 @@ const create = async (feature: IFeature): Promise<void> => {
   session.features.push(newFeature._id);
   await session.save();
 
-  return;
+  return newFeature;
 };
 
 const list = async (): Promise<IFeature[]> => {

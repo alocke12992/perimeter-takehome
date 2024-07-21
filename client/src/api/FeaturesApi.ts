@@ -12,7 +12,7 @@ const create = async ({
 }: {
   feature: GeoJSON.Feature;
   session: string;
-}): Promise<void> => {
+}): Promise<IFeature> => {
   return await fetch(Paths.Api.Features.Create(), {
     method: "POST",
     headers: {
@@ -22,9 +22,11 @@ const create = async ({
       ...feature,
       session,
     }),
-  }).then((res) => {
-    return res.json();
-  });
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => data.feature);
 };
 
 const remove = async (id: string): Promise<void> => {

@@ -4,12 +4,9 @@ import { ObjectId } from "mongodb";
 import { IFeature } from "@src/models/Feature";
 import FeaturesController from "@src/controllers/FeaturesController";
 
-
 const create = async (req: IReq<IFeature>, res: IRes) => {
-  await FeaturesController.create(req.body);
-  return res
-    .status(HttpStatusCodes.CREATED)
-    .json({ message: "Feature created" });
+  const feature = await FeaturesController.create(req.body);
+  return res.status(HttpStatusCodes.CREATED).json({ feature });
 };
 
 const list = async (req: IReq, res: IRes) => {
