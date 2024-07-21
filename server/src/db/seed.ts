@@ -3,9 +3,10 @@ import Session from "@src/models/Session";
 import { faker } from "@faker-js/faker";
 import connect from "@src/db";
 import { mockFeatures, mockSession } from "./mocks";
+import { Types } from "mongoose";
 import Feature from "@src/models/Feature";
 
-const createFeatures = async () => {
+const createFeatures = async (session: Types.ObjectId) => {
   const features = mockFeatures.map(
     (mockFeature) =>
       new Feature({
@@ -13,6 +14,7 @@ const createFeatures = async () => {
         properties: {
           name: faker.location.city(),
         },
+        session,
       })
   );
   return await Feature.insertMany(features);
@@ -20,14 +22,15 @@ const createFeatures = async () => {
 
 const seed = async () => {
   await connect();
-  const features = await createFeatures();
 
   const session = new Session({
     lat: mockSession.lat,
     long: mockSession.long,
-    features: features.map((feature) => feature._id),
   });
 
+  await session.save();
+  const features = await createFeatures(session._id);
+  session.features.push(...features.map((feature) => feature._id));
   await session.save();
 };
 

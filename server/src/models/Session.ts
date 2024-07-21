@@ -1,10 +1,10 @@
-import { Schema, model } from "mongoose";
+import { Schema, Types, model } from "mongoose";
 
 export interface ISession {
   lat: number;
   long: number;
   createdAt: Date;
-  features: Schema.Types.ObjectId[];
+  features: Types.ObjectId[];
 }
 
 const SessionSchema = new Schema<ISession>({

@@ -1,9 +1,26 @@
 import { Types } from "mongoose";
 import Feature, { IFeature } from "@src/models/Feature";
+import Session from "@src/models/Session";
+import { ObjectId } from "mongodb";
 
 const create = async (feature: IFeature): Promise<void> => {
-  const newFeature = new Feature(feature);
+  console.log("feature", feature);
+  const sessionId = new ObjectId(feature.session);
+  const session = await Session.findById(sessionId);
+  if (!session) {
+    throw new Error("Session not found");
+  }
+
+  const newFeature = new Feature({
+    ...feature,
+    session: sessionId,
+  });
   await newFeature.save();
+
+  session.features.push(newFeature._id);
+  await session.save();
+
+  return;
 };
 
 const list = async (): Promise<IFeature[]> => {
@@ -16,7 +33,11 @@ const update = async (id: Types.ObjectId, feature: IFeature): Promise<void> => {
 };
 
 const remove = async (id: Types.ObjectId): Promise<void> => {
-  await Feature.findByIdAndDelete(id);
+  await Feature.findByIdAndDelete(id).then(async (feature) => {
+    await Session.findByIdAndUpdate(feature?.session, {
+      $pull: { features: feature?._id },
+    });
+  });
   return;
 };
 

@@ -5,6 +5,7 @@ export interface ISession {
   lat: number;
   long: number;
   createdAt: Date;
+  features: IFeature[];
   _id: string;
 }
 
@@ -27,19 +28,12 @@ const create = ({ lat, long }: CreateSessionBody): Promise<ISession> => {
     });
 };
 
-export type ListSessionFeaturesResponse = {
-  features: IFeature[];
-  session: ISession;
-};
-
-const listSessionFeatures = (
-  id: string | undefined
-): Promise<ListSessionFeaturesResponse | undefined> => {
+const get = (id: string | undefined): Promise<ISession | undefined> => {
   if (!id) {
     return Promise.resolve(undefined);
   }
 
-  return fetch(Paths.Api.Sessions.ListSessionFeatures(id))
+  return fetch(Paths.Api.Sessions.Get(id))
     .then((res) => res.json())
     .then((res) => {
       return res;
@@ -48,5 +42,5 @@ const listSessionFeatures = (
 
 export default {
   create,
-  listSessionFeatures,
+  get,
 };

@@ -6,16 +6,13 @@ export interface IFeature extends GeoJSON.Feature<Polygon> {
   _id: string;
 }
 
-const create = async (
-  feature: GeoJSON.Feature,
-  sessionId: string
-): Promise<void> => {
+const create = async (feature: GeoJSON.Feature): Promise<void> => {
   return await fetch(Paths.Api.Features.Create(), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ ...feature, sessionId }),
+    body: JSON.stringify(feature),
   }).then((res) => {
     return res.json();
   });
