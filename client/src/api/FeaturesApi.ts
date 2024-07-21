@@ -2,7 +2,7 @@ import { Polygon } from "geojson";
 import Paths from "../lib/Paths";
 
 export interface IFeature extends GeoJSON.Feature<Polygon> {
-  sessionId: string;
+  session: string;
   _id: string;
 }
 
@@ -29,6 +29,24 @@ const create = async ({
     .then((data) => data.feature);
 };
 
+const update = async ({
+  feature,
+}: {
+  feature: IFeature;
+}): Promise<IFeature> => {
+  return await fetch(Paths.Api.Features.Update(feature._id), {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(feature),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => data.feature);
+};
+
 const remove = async (id: string): Promise<void> => {
   return await fetch(Paths.Api.Features.Remove(id), {
     method: "DELETE",
@@ -44,4 +62,5 @@ const remove = async (id: string): Promise<void> => {
 export default {
   create,
   remove,
+  update,
 };

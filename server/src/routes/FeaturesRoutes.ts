@@ -15,8 +15,11 @@ const list = async (req: IReq, res: IRes) => {
 };
 
 const update = async (req: IReq<IFeature>, res: IRes) => {
-  await FeaturesController.update(new ObjectId(req.params.id), req.body);
-  return res.status(HttpStatusCodes.CREATED).send();
+  const feature = await FeaturesController.update(
+    new ObjectId(req.params.id),
+    req.body
+  );
+  return res.status(HttpStatusCodes.OK).json({ feature });
 };
 
 const remove = async (req: IReq, res: IRes) => {

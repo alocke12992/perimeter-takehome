@@ -7,7 +7,7 @@ import FeaturesApi from "../api/FeaturesApi";
 export const useDeleteFeature = () => {
   const { data, error, isLoading, mutate } = useMutation(
     ["deleteFeature"],
-    async (id: string) => await FeaturesApi.remove(id)
+    (id: string) => FeaturesApi.remove(id)
   );
 
   return {

@@ -16,6 +16,7 @@ const Paths = {
     },
     Features: {
       Create: () => `${EnvVars.ApiUrl}/features/`,
+      Update: (id: string) => `${EnvVars.ApiUrl}/features/${id}`,
       Remove: (id: string) => `${EnvVars.ApiUrl}/features/${id}`,
     },
   },

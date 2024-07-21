@@ -27,9 +27,16 @@ const list = async (): Promise<IFeature[]> => {
   return await Feature.find();
 };
 
-const update = async (id: Types.ObjectId, feature: IFeature): Promise<void> => {
-  await Feature.findByIdAndUpdate(id, feature);
-  return;
+const update = async (
+  id: Types.ObjectId,
+  feature: IFeature
+): Promise<IFeature> => {
+  const update = await Feature.findByIdAndUpdate(id, feature, { new: true });
+  console.log("update", update);
+  if (!update) {
+    throw new Error("Feature not found");
+  }
+  return update;
 };
 
 const remove = async (id: Types.ObjectId): Promise<void> => {

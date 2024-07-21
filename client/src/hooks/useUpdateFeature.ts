@@ -1,18 +1,12 @@
 import { useMutation, useQueryClient } from "react-query";
-import FeaturesApi from "../api/FeaturesApi";
+import FeaturesApi, { IFeature } from "../api/FeaturesApi";
 import { ISession } from "../api/SessionsApi";
 
-export const useCreateFeature = () => {
+export const useUpdateFeature = () => {
   const queryClient = useQueryClient();
   const { data, error, isLoading, mutateAsync } = useMutation({
-    mutationFn: async ({
-      feature,
-      session,
-    }: {
-      feature: GeoJSON.Feature;
-      session: string;
-    }) => {
-      return FeaturesApi.create({ feature, session });
+    mutationFn: (feature: IFeature) => {
+      return FeaturesApi.update({ feature });
     },
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({
@@ -22,36 +16,36 @@ export const useCreateFeature = () => {
         "session",
         variables.session,
       ]);
+
       const newFeature = {
-        ...data,
-        properties: { ...data.properties, featureId: data._id },
+        ...variables,
+        properties: {
+          ...variables.properties,
+          featureId: variables.properties?.featureId,
+        },
       };
       if (previousSession) {
         queryClient.setQueryData(["session", variables.session], {
           ...previousSession,
-          features: [...previousSession.features, newFeature],
+          features: previousSession.features.map((feature) => {
+            if (feature._id === newFeature.properties?.featureId) {
+              return newFeature;
+            }
+            return feature;
+          }),
         });
       }
     },
   });
 
-  const createFeature = async ({
-    feature,
-    session,
-  }: {
-    feature: GeoJSON.Feature;
-    session: string;
-  }) => {
-    return await mutateAsync({
-      feature,
-      session,
-    });
+  const updateFeature = async (feature: IFeature) => {
+    return await mutateAsync(feature);
   };
 
   return {
     data,
     error,
     isLoading,
-    createFeature,
+    updateFeature,
   };
 };
