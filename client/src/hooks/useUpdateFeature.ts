@@ -8,7 +8,7 @@ export const useUpdateFeature = () => {
     mutationFn: (feature: IFeature) => {
       return FeaturesApi.update({ feature });
     },
-    onSuccess: (data, variables) => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: ["session", variables.session],
       });
