@@ -1,8 +1,8 @@
-import HttpStatusCodes from "@src/common/HttpStatusCodes";
+import HttpStatusCodes from "../common/HttpStatusCodes";
 import { IReq, IRes } from "./types/express/misc";
 import { ObjectId } from "mongodb";
-import { IFeature } from "@src/models/Feature";
-import FeaturesController from "@src/controllers/FeaturesController";
+import { IFeature } from "../models/Feature";
+import FeaturesController from "../controllers/FeaturesController";
 import { validationResult } from "express-validator";
 
 const create = async (req: IReq<IFeature>, res: IRes) => {

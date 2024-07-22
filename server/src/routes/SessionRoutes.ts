@@ -1,9 +1,8 @@
 import { ObjectId } from "mongodb";
-import HttpStatusCodes from "@src/common/HttpStatusCodes";
+import HttpStatusCodes from "../common/HttpStatusCodes";
 import { IReq, IRes } from "./types/express/misc";
-import { ISession } from "@src/models/Session";
-import SessionsController from "@src/controllers/SessionsController";
-import FeaturesController from "@src/controllers/FeaturesController";
+import { ISession } from "../models/Session";
+import SessionsController from "../controllers/SessionsController";
 
 const create = async (
   req: IReq<Omit<ISession, "createdAt" | "features">>,

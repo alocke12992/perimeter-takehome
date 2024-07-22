@@ -1,8 +1,8 @@
 import { Router } from "express";
 import SessionRoutes from "./SessionRoutes";
 import FeatureRoutes from "./FeaturesRoutes";
-import Paths from "@src/common/Paths";
-import { isValidPolygon } from "@src/util/validators";
+import Paths from "../common/Paths";
+import { isValidPolygon } from "../util/validators";
 
 // **** Routers **** //
 const apiRouter = Router();

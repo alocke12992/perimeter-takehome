@@ -1,4 +1,4 @@
-import Session, { ISession } from "@src/models/Session";
+import Session, { ISession } from "../models/Session";
 import { Types } from "mongoose";
 
 export const create = async (

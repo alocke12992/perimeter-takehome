@@ -6,14 +6,14 @@ import logger from "jet-logger";
 
 import "express-async-errors";
 
-import BaseRouter from "@src/routes";
+import BaseRouter from "./routes";
 
-import Paths from "@src/common/Paths";
-import EnvVars from "@src/common/EnvVars";
-import HttpStatusCodes from "@src/common/HttpStatusCodes";
-import RouteError from "@src/common/RouteError";
-import { NodeEnvs } from "@src/common/misc";
-import connect from "@src/db";
+import Paths from "./common/Paths";
+import EnvVars from "./common/EnvVars";
+import HttpStatusCodes from "./common/HttpStatusCodes";
+import RouteError from "./common/RouteError";
+import { NodeEnvs } from "./common/misc";
+import connect from "./db";
 import cors from "cors";
 
 const app = express();

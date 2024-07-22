@@ -1,10 +1,10 @@
-import "@src/pre-start"; // Must be the first import
-import Session from "@src/models/Session";
+import "../pre-start"; // Must be the first import
+import Session from "../models/Session";
 import { faker } from "@faker-js/faker";
-import connect from "@src/db";
+import connect from "../db";
 import { mockFeatures, mockSession } from "./mocks";
 import { Types } from "mongoose";
-import Feature from "@src/models/Feature";
+import Feature from "../models/Feature";
 
 const createFeatures = async (session: Types.ObjectId) => {
   const features = mockFeatures.map(
