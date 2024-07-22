@@ -11,7 +11,8 @@ const Layout: FC<Props> = ({ children }) => {
       overflow="hidden"
       height="100vh"
       width="100vw"
-      p={8}
+      py={[2, 2, 8]}
+      px={[0, 0, 8]}
     >
       {children}
     </Box>
