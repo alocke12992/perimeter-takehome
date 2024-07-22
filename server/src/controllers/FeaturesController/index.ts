@@ -1,9 +1,20 @@
 import { Types } from "mongoose";
-import Feature, { IFeature } from "@src/models/Feature";
-import Session from "@src/models/Session";
+import Feature, { IFeature } from "../../models/Feature";
+import Session from "../../models/Session";
 import { ObjectId } from "mongodb";
+import { polygon } from "@turf/helpers";
+import booleanValid from "@turf/boolean-valid";
 
-const create = async (feature: IFeature): Promise<IFeature> => {
+const create = async (
+  feature: IFeature
+): Promise<InstanceType<typeof Feature>> => {
+  const _polygon = polygon(feature.geometry.coordinates);
+  const isValid = booleanValid(_polygon);
+
+  if (!isValid) {
+    throw new Error("Invalid polygon");
+  }
+
   const sessionId = new ObjectId(feature.session);
   const session = await Session.findById(sessionId);
   if (!session) {
