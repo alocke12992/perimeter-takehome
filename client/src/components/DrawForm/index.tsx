@@ -7,6 +7,8 @@ import { useCallback, FC, useRef, useState } from "react";
 import { ISession } from "../../api/SessionsApi";
 import { IFeature } from "../../api/FeaturesApi";
 
+import { booleanValid } from "@turf/boolean-valid";
+
 type Props = {
   session: ISession;
   createFeature: ({
@@ -131,13 +133,16 @@ const DrawForm: FC<Props> = ({
     if (!selectedElm?.current?.id) {
       return;
     }
-    const drawFeature = drawRef.current?.get(
-      selectedElm?.current?.id?.toString()
-    );
+    const drawFeature = drawRef.current?.get(selectedElm.current.id.toString());
 
     if (!drawFeature) {
       return;
     }
+    const isValidPolygon = booleanValid(drawFeature);
+    if (!isValidPolygon) {
+      return;
+    }
+
     if (selectedFeature?.properties?.featureId) {
       const updated = await updateFeature({
         ...selectedFeature,
