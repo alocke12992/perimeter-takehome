@@ -2,6 +2,7 @@ import { Router } from "express";
 import SessionRoutes from "./SessionRoutes";
 import FeatureRoutes from "./FeaturesRoutes";
 import Paths from "@src/common/Paths";
+import { isValidPolygon } from "@src/util/validators";
 
 // **** Routers **** //
 const apiRouter = Router();
@@ -9,15 +10,12 @@ const sessionRouter = Router();
 const featureRouter = Router();
 
 // **** Routes **** //
-// TODO validation
 sessionRouter.post(Paths.Sessions.Create, SessionRoutes.create);
 sessionRouter.get(Paths.Sessions.Get, SessionRoutes.get);
 
-// TODO validate polygon
-// TODO validate session
 featureRouter.get(Paths.Features.List, FeatureRoutes.list);
-featureRouter.put(Paths.Features.Update, FeatureRoutes.update);
-featureRouter.post(Paths.Features.Create, FeatureRoutes.create);
+featureRouter.put(Paths.Features.Update, isValidPolygon, FeatureRoutes.update);
+featureRouter.post(Paths.Features.Create, isValidPolygon, FeatureRoutes.create);
 featureRouter.delete(Paths.Features.Delete, FeatureRoutes.remove);
 
 // REGISTER ROUTES

@@ -4,7 +4,6 @@ import Session from "@src/models/Session";
 import { ObjectId } from "mongodb";
 
 const create = async (feature: IFeature): Promise<IFeature> => {
-  console.log("feature", feature);
   const sessionId = new ObjectId(feature.session);
   const session = await Session.findById(sessionId);
   if (!session) {
@@ -32,7 +31,6 @@ const update = async (
   feature: IFeature
 ): Promise<IFeature> => {
   const update = await Feature.findByIdAndUpdate(id, feature, { new: true });
-  console.log("update", update);
   if (!update) {
     throw new Error("Feature not found");
   }
