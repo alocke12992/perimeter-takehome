@@ -10,12 +10,12 @@ function App() {
   return (
     <Layout>
       <Routes>
-        <Route element={<SessionPage />} path={Paths.Views.Session()} />
-        <Route
-          element={<SharedSessionPage />}
-          path={Paths.Views.SharedSession()}
-        />
-        <Route element={<Loading />} path="*"></Route>
+          <Route element={<SessionPage />} path={Paths.Views.Session()} />
+          <Route
+            element={<SharedSessionPage />}
+            path={Paths.Views.SharedSession()}
+          />
+          <Route element={<Loading />} path="*"></Route>
       </Routes>
     </Layout>
   );

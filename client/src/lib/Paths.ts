@@ -22,7 +22,7 @@ const Paths = {
   },
   Views: {
     Session: () => `/`,
-    SharedSession: () => `/shared-session/:id`,
+    SharedSession: () => `/session/:id`,
   },
 };
 

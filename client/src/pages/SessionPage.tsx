@@ -5,6 +5,8 @@ import DrawForm from "../components/DrawForm";
 import { useCreateFeature } from "../hooks/useCreateFeature";
 import { useDeleteFeature } from "../hooks/useDeleteFeature";
 import { useUpdateFeature } from "../hooks/useUpdateFeature";
+import { Box } from "@chakra-ui/react";
+import SharePopover from "../components/SharePopover";
 
 const SessionPage = () => {
   const { sessionId } = useContext(SessionContext);
@@ -18,12 +20,15 @@ const SessionPage = () => {
   }
 
   return (
-    <DrawForm
-      session={data}
-      createFeature={createFeature}
-      deleteFeature={deleteFeature}
-      updateFeature={updateFeature}
-    />
+    <Box h="full" w="full">
+      <SharePopover sessionId={sessionId} />
+      <DrawForm
+        session={data}
+        createFeature={createFeature}
+        deleteFeature={deleteFeature}
+        updateFeature={updateFeature}
+      />
+    </Box>
   );
 };
 
