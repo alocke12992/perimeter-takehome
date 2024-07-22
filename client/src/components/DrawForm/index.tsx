@@ -28,7 +28,6 @@ const DrawForm: FC<Props> = ({
 }) => {
   const drawRef = useRef<MapboxDraw | null>(null); // Ref need
   const selectedElm = useRef<GeoJSON.Feature<Polygon> | null>(null);
-  const [hasChanged, setHasChanged] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState<
     GeoJSON.Feature | undefined
   >(undefined);
@@ -43,7 +42,6 @@ const DrawForm: FC<Props> = ({
         name: e.target.value,
       },
     });
-    setHasChanged(true);
   };
 
   // TODO fix click away reset
@@ -241,7 +239,6 @@ const DrawForm: FC<Props> = ({
             onClear={handleClear}
             onChange={onChange}
             onSubmit={handleSubmit}
-            isDisabled={!hasChanged}
             onUndo={handleUndo}
           />
         )}

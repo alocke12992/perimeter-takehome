@@ -23,7 +23,6 @@ const DrawFeatures: FC<Props> = ({
   onLoad,
   drawRef,
 }) => {
-  // TODO: fix this
   // @ts-ignore
   useControl<MapboxDraw>(
     () => {

@@ -49,7 +49,7 @@ const SharePopover: FC<Props> = ({ sessionId }) => {
               <FormLabel>
                 {hasCopied ? "Copied!" : "Copy link to clipboard"}
               </FormLabel>
-              <Input value={url} />
+              <Input value={url} readOnly />
             </FormControl>
             <Button onClick={handleCopy}>Copy</Button>
           </PopoverBody>
